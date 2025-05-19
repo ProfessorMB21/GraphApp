@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
-        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        <!--<local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>-->
     </Window.Resources>
     
     <Window.CommandBindings>
@@ -83,10 +83,10 @@
                 <TextBlock Text="{Binding SelectedFilePath}"/>
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock Text="{Binding Graph.Vertices.Count, StringFormat='Vertices: {0}'}"/>
+                <TextBlock Text="{Binding Graph.Vertices.Count, StringFormat='Vertices: {0};'}"/>
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock Text="{Binding ShortestPath.Count, StringFormat='Vertices in shortest path: {0}'}"/>
+                <TextBlock Text="{Binding ShortestPath.Count, StringFormat='Vertices in shortest path: {0};'}"/>
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock Text="{Binding ShortestDistance, StringFormat='Shortest distance: {0}'}"/>

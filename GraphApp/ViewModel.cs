@@ -373,7 +373,8 @@ namespace GraphApp
             else
             {
                 ShortestPath = new ObservableCollection<Vertex>(path);
-                MessageBox.Show($"Shortest path found with distance: {distance}",
+                ShortestDistance = distance;
+                MessageBox.Show($"Shortest path found with distance: {ShortestDistance}",
                 "Path Found", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
