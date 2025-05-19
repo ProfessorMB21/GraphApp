@@ -1,0 +1,96 @@
+﻿<Window x:Class="GraphApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GraphApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    </Window.Resources>
+    
+    <Window.CommandBindings>
+        <CommandBinding Command="local:Command.OpenFile" Executed="OpenFile_Executed"/>
+        <CommandBinding Command="local:Command.DrawGraph" Executed="DrawGraph_Executed"/>
+        <CommandBinding Command="local:Command.FindPath" Executed="FindPath_Executed"/>
+    </Window.CommandBindings>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <ToolBar Grid.Row="0">
+            <Button Content="Open File" Command="local:Command.OpenFile"/>
+            <Separator/>
+            <Button Content="Find Path" Command="local:Command.FindPath"/>
+            <Button Content="Draw Graph" Command="local:Command.DrawGraph" 
+                    CommandParameter="{Binding ElementName=GraphCanvas}"/>
+        </ToolBar>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Controls -->
+            <StackPanel Grid.Column="0" Margin="10">
+                <GroupBox Header="Vertices">
+                    <StackPanel>
+                        <TextBlock Text="Start Vertex:" Margin="0,5"/>
+                        <ComboBox ItemsSource="{Binding Graph.Vertices}" 
+                                  SelectedItem="{Binding SelectedStartVertex}"
+                                  DisplayMemberPath="Name"
+                                  Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Destination Vertex:" Margin="0,5"/>
+                        <ComboBox ItemsSource="{Binding Graph.Vertices}" 
+                                  SelectedItem="{Binding SelectedDestinationVertex}"
+                                  DisplayMemberPath="Name"
+                                  Margin="0,0,0,10"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox x:Name="gBoxPathInfo" Header="Path Info" Visibility="Hidden" >
+                    <StackPanel>
+                        <TextBlock Text="Shortest Path:" FontWeight="Bold"/>
+                        <ItemsControl ItemsSource="{Binding ShortestPath}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+
+            <!-- Graph Visualization -->
+            <Border Grid.Column="1" BorderBrush="LightGray" BorderThickness="1" Margin="10">
+                <Canvas x:Name="GraphCanvas" Background="White"/>
+            </Border>
+        </Grid>
+
+        <!-- Status Bar -->
+        <StatusBar Grid.Row="2" x:Name="statBar" Visibility="Hidden">
+            <StatusBarItem>
+                <TextBlock Text="{Binding SelectedFilePath}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding Graph.Vertices.Count, StringFormat='Vertices: {0}'}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding ShortestPath.Count, StringFormat='Vertices in shortest path: {0}'}"/>
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock Text="{Binding ShortestDistance, StringFormat='Shortest distance: {0}'}"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
