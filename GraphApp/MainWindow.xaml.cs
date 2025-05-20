@@ -16,7 +16,8 @@ namespace GraphApp;
 /// </summary>
 public partial class MainWindow : Window
 {
-    MainViewModel vm = new();    
+    MainViewModel vm = new();
+    private readonly string _title = "PathFinder🛣️";
     public MainWindow()
     {
         InitializeComponent();
@@ -34,6 +35,7 @@ public partial class MainWindow : Window
             gBoxPathInfo.Visibility = Visibility.Visible;
         }
         vm.DrawGraph(GraphCanvas);
+        Title = $"{_title}: {vm.PathToString()}";
     }
     private void FindPath_Executed(object sender, ExecutedRoutedEventArgs e)
     {

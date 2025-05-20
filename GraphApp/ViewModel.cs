@@ -107,6 +107,22 @@ namespace GraphApp
             }
         }
 
+        public string PathToString()
+        {
+            string result = string.Empty;
+            if (ShortestPath != null)
+            {
+                foreach (var vertex in ShortestPath)
+                {
+                    if (ShortestPath.IndexOf(vertex) != ShortestPath.Count)
+                        result += $"->{vertex.Name}";
+                    else
+                        result += vertex.Name;
+                }
+            }
+            return result;
+        }
+
         public void OpenFile()
         {
             var openFileDialog = new OpenFileDialog
@@ -120,7 +136,7 @@ namespace GraphApp
                 try
                 {
                     SelectedFilePath = openFileDialog.FileName;
-                    Graph.Clear(); // Clear existing graph
+                    Graph.Clear();
                     var newGraph = _fileIOService.ReadGraphFile(SelectedFilePath);
                     
                     // Copy vertices and edges to maintain ObservableCollection notifications
@@ -249,7 +265,7 @@ namespace GraphApp
                     Fill = GetVertexBrush(Graph.Vertices[i]),
                     //Stroke = Brushes.Black,
                     //StrokeThickness = 1
-                    Stroke = isInPath ? Brushes.Red : Brushes.Black,
+                    Stroke = isInPath ? Brushes.Red : Brushes.Black,        /// changes for dh
                     StrokeThickness = isInPath ? 2 : 1
                 };
                 Canvas.SetLeft(ellipse, x - 15);
