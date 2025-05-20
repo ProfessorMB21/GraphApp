@@ -6,12 +6,7 @@
         xmlns:local="clr-namespace:GraphApp"
         mc:Ignorable="d"
         Title="PathFinder🛣️" Height="450" Width="800">
-    <!--
-    <Window.Resources>
-        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
-    </Window.Resources>
-    -->
-    
+
     <Window.CommandBindings>
         <CommandBinding Command="local:Command.OpenFile" Executed="OpenFile_Executed"/>
         <CommandBinding Command="local:Command.DrawGraph" Executed="DrawGraph_Executed"/>
