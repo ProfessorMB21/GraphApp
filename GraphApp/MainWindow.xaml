@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="PathFinder🛣️" Height="450" Width="800">
+    <!--
     <Window.Resources>
-        <!--<local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>-->
+        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
     </Window.Resources>
+    -->
     
     <Window.CommandBindings>
         <CommandBinding Command="local:Command.OpenFile" Executed="OpenFile_Executed"/>
@@ -52,6 +54,11 @@
                         <TextBlock Text="Destination Vertex:" Margin="0,5"/>
                         <ComboBox ItemsSource="{Binding Graph.Vertices}" 
                                   SelectedItem="{Binding SelectedDestinationVertex}"
+                                  DisplayMemberPath="Name"
+                                  Margin="0,0,0,10"/>
+                        <TextBlock Text="Skip Vertex(Optional):" Margin="0,5"/>
+                        <ComboBox ItemsSource="{Binding Graph.Vertices}" 
+                                  SelectedItem="{Binding SelectedExclusionVertex}"
                                   DisplayMemberPath="Name"
                                   Margin="0,0,0,10"/>
                     </StackPanel>

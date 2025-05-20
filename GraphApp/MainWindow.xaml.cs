@@ -29,7 +29,7 @@ public partial class MainWindow : Window
     }
     private void DrawGraph_Executed(object sender, ExecutedRoutedEventArgs e)
     {
-        if (vm.IsGraphDrawn)
+        if (vm.IsGraphDrawn && vm.CanFindPath)
         {
             gBoxPathInfo.Visibility = Visibility.Visible;
         }
@@ -37,7 +37,7 @@ public partial class MainWindow : Window
     }
     private void FindPath_Executed(object sender, ExecutedRoutedEventArgs e)
     {
-        if (vm.IsGraphDrawn || !vm.IsGraphDrawn)
+        if ((vm.IsGraphDrawn || !vm.IsGraphDrawn) && vm.CanFindPath)
         {
             gBoxPathInfo.Visibility = Visibility.Visible;
         }

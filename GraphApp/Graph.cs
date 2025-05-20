@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace GraphApp
 {
@@ -139,7 +140,7 @@ namespace GraphApp
         public void AddEdge(Vertex source, Vertex destination, double weight)
             => AddEdge(new Edge { Source = source, Destination = destination, Weight = weight });
 
-        // Rest of the methods remain the same (GetNeighbors, GetEdgeWeight, FindShortestPath)
+        //
 
         public List<Vertex> GetNeighbors(Vertex vertex)
         {
@@ -197,6 +198,55 @@ namespace GraphApp
                 foreach (var neighbor in GetNeighbors(current))
                 {
                     if (!unvisited.Contains(neighbor)) continue;
+
+                    var alt = distances[current] + GetEdgeWeight(current, neighbor);
+                    if (alt < distances[neighbor])
+                    {
+                        distances[neighbor] = alt;
+                        previous[neighbor] = current;
+                    }
+                }
+            }
+
+            return (null!, double.PositiveInfinity);
+        }
+        public (List<Vertex> path, double totalDistance) FindShortestPath(Vertex start, Vertex end, Vertex? exclude=null)
+        {
+            // Implementation of Dijkstra's algorithm
+            var distances = new Dictionary<Vertex, double>();
+            var previous = new Dictionary<Vertex, Vertex>();
+            var unvisited = new List<Vertex>();
+
+            foreach (var vertex in Vertices)
+            {
+                if (vertex != exclude)      // add all vertices exclusive of the excluded vertex
+                {
+                    distances[vertex] = vertex == start ? 0 : double.PositiveInfinity;
+                    previous[vertex] = null!;
+                    unvisited.Add(vertex);
+                }
+            }
+
+            while (unvisited.Count > 0)
+            {
+                var current = unvisited.OrderBy(v => distances[v]).First();
+                unvisited.Remove(current);
+
+                if (current == end)
+                {
+                    var path = new List<Vertex>();
+                    while (previous[current] != null)
+                    {
+                        path.Insert(0, current);
+                        current = previous[current];
+                    }
+                    path.Insert(0, start);
+                    return (path, distances[end]);
+                }
+
+                foreach (var neighbor in GetNeighbors(current))
+                {
+                    if (!unvisited.Contains(neighbor) || neighbor == exclude) continue;      // ensure that the excluded vertex is not included as a neighbor
 
                     var alt = distances[current] + GetEdgeWeight(current, neighbor);
                     if (alt < distances[neighbor])

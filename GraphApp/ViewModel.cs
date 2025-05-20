@@ -241,12 +241,16 @@ namespace GraphApp
         private bool _isGraphDrawn = false;
         private ObservableCollection<Vertex> _shortestPath = new();
         private double _shortestDist;
+        private Vertex _selectedExclusionVertex = null!;
 
         public Graph Graph { get; private set; } = new();
 
         public bool CanFindPath => SelectedStartVertex != null && 
                                  SelectedDestinationVertex != null && 
                                  SelectedStartVertex != SelectedDestinationVertex;
+
+        public bool IsExclusionVertexIncluded => SelectedExclusionVertex != SelectedStartVertex && 
+                                SelectedExclusionVertex != SelectedDestinationVertex;
 
         public FileIOService FileIOService => _fileIOService;
         public double ShortestDistance
@@ -288,6 +292,17 @@ namespace GraphApp
             set
             {
                 _selectedDestinationVertex = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CanFindPath));
+            }
+        }
+
+        public Vertex SelectedExclusionVertex
+        {
+            get => _selectedExclusionVertex;
+            set
+            {
+                _selectedExclusionVertex = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CanFindPath));
             }
@@ -360,8 +375,18 @@ namespace GraphApp
                     MessageBoxImage.Information);
                 return;
             }
+            List<Vertex>? path;
+            double distance;
 
-            var (path, distance) = Graph.FindShortestPath(SelectedStartVertex, SelectedDestinationVertex);
+            if (SelectedExclusionVertex != null && IsExclusionVertexIncluded)
+            {
+                (path, distance) = Graph.FindShortestPath(SelectedStartVertex, SelectedDestinationVertex, SelectedExclusionVertex);
+            }
+            else
+            {
+                (path, distance) = Graph.FindShortestPath(SelectedStartVertex, SelectedDestinationVertex);
+            }
+
             if (path == null)
             {
                 MessageBox.Show("Path not found. Try again with different vertices.",
@@ -381,7 +406,7 @@ namespace GraphApp
   
         public void DrawGraph(Canvas canvas)
         {
-            if (IsGraphDrawn) FindPath();       /// in case the user clicks on draw graph without finding the path first.
+            // if (IsGraphDrawn) FindPath();       /// in case the user clicks on draw graph without finding the path first.
 
             canvas.Children.Clear();
             
