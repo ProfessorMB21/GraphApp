@@ -21,6 +21,8 @@ namespace GraphApp
         private ObservableCollection<Vertex> _shortestPath = new();
         private double _shortestDist;
         private Vertex _selectedExclusionVertex = null!;
+        private bool _canResetSelections = false;       /// new feature 
+        private ObservableCollection<Vertex> _shortestPathExclusion = new();
 
         public Graph Graph { get; private set; } = new();
 
@@ -106,6 +108,16 @@ namespace GraphApp
                 OnPropertyChanged();
             }
         }
+         public ObservableCollection<Vertex> ExclusionShortestPath
+        {
+            get => _shortestPathExclusion;
+            set
+            {
+                _shortestPathExclusion = value;
+                OnPropertyChanged();
+            }
+        }
+        
 
         public string PathToString()
         {
@@ -122,6 +134,33 @@ namespace GraphApp
             }
             return result;
         }
+        public void Clear()
+        {
+            Graph.Clear();
+            ShortestDistance = 0;
+            ShortestPath.Clear();
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(Graph));
+        }
+
+        // New feature under dev
+        // Todo: Implement me, Bupe!!! xaxaxaxa:)))))
+        public bool CanResetSelections
+        {
+            get => _canResetSelections;
+            set
+            {
+                _canResetSelections = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedStartVertex));
+                OnPropertyChanged(nameof(SelectedDestinationVertex));
+                OnPropertyChanged(nameof(SelectedExclusionVertex));
+            }
+        }
+        public void ResetComboSelections()
+        {
+            /// Todo:
+        }
 
         public void OpenFile()
         {
@@ -136,10 +175,8 @@ namespace GraphApp
                 try
                 {
                     SelectedFilePath = openFileDialog.FileName;
-                    Graph.Clear();
                     var newGraph = _fileIOService.ReadGraphFile(SelectedFilePath);
                     
-                    // Copy vertices and edges to maintain ObservableCollection notifications
                     foreach (var vertex in newGraph.Vertices)
                     {
                         Graph.AddVertex(vertex);
@@ -160,6 +197,7 @@ namespace GraphApp
             }
         }
 
+        
         public void FindPath()
         {
             if (!CanFindPath)
@@ -255,7 +293,7 @@ namespace GraphApp
                 double x = centerX + radius * Math.Sin(angle);
                 double y = centerY - radius * Math.Cos(angle);
 
-                // changes for double highlighting
+                /// changes for double highlighting
                 var vertex = Graph.Vertices[i];
                 bool isInPath = ShortestPath?.Contains(vertex) ?? false;
 
@@ -279,8 +317,8 @@ namespace GraphApp
                     VerticalAlignment = VerticalAlignment.Center,
                     FontWeight = isInPath ? FontWeights.Bold : FontWeights.Normal       /// changes for dh
                 };
-                Canvas.SetLeft(text, x - text.ActualWidth / 2);
-                Canvas.SetTop(text, y - text.ActualHeight / 2);
+                Canvas.SetLeft(text, x - 4);        /// vertex name location
+                Canvas.SetTop(text, y - 8);
                 canvas.Children.Add(text);
             }
 

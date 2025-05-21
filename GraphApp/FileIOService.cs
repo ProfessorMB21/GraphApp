@@ -40,7 +40,7 @@ namespace GraphApp
                     {
                         var destVertex = graph.Vertices[j];
                         graph.AddEdge(sourceVertex, destVertex, weight);
-                    }
+                    }  
                 }
             }
 
@@ -57,7 +57,8 @@ namespace GraphApp
             var firstRow = worksheet.FirstRowUsed();
             var firstCell = firstRow.FirstCellUsed();
             var lastCell = firstRow.LastCellUsed();
-            int columnCount = lastCell.Address.ColumnNumber - firstCell.Address.ColumnNumber + 1;
+            //int columnCount = lastCell.Address.ColumnNumber - firstCell.Address.ColumnNumber + 1;
+            int columnCount = worksheet.LastRowUsed()!.RowNumber();
 
             // Add vertices
             for (int col = 1; col <= columnCount; col++)

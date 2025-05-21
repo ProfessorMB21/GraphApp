@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace GraphApp
@@ -128,7 +129,7 @@ namespace GraphApp
 
             return (null!, double.PositiveInfinity);
         }
-        public (List<Vertex> path, double totalDistance) FindShortestPath(Vertex start, Vertex end, Vertex? exclude=null)
+        public (List<Vertex> path, double totalDistance) FindShortestPath(Vertex start, Vertex end, Vertex exclude=null!)
         {
             // Implementation of Dijkstra's algorithm
             var distances = new Dictionary<Vertex, double>();
@@ -180,7 +181,7 @@ namespace GraphApp
         //
 
         public event PropertyChangedEventHandler? PropertyChanged;
-        protected void OnPropertyChanged(string propertyName = "")
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        protected void OnPropertyChanged([CallerMemberName]string prop = "")
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
     }
 }

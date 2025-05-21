@@ -9,7 +9,7 @@
 
     <Window.CommandBindings>
         <CommandBinding Command="local:Command.OpenFile" Executed="OpenFile_Executed"/>
-        <CommandBinding Command="local:Command.DrawGraph" Executed="DrawGraph_Executed"/>
+        <!-- <CommandBinding Command="local:Command.DrawGraph" Executed="DrawGraph_Executed"/> -->
         <CommandBinding Command="local:Command.FindPath" Executed="FindPath_Executed"/>
     </Window.CommandBindings>
     
@@ -25,8 +25,11 @@
             <Button Content="Open File" Command="local:Command.OpenFile"/>
             <Separator/>
             <Button Content="Find Path" Command="local:Command.FindPath"/>
+            <!--
+            <Separator/>
             <Button Content="Draw Graph" Command="local:Command.DrawGraph" 
                     CommandParameter="{Binding ElementName=GraphCanvas}"/>
+            -->
         </ToolBar>
 
         <!-- Main Content -->
@@ -38,28 +41,40 @@
 
             <!-- Controls -->
             <StackPanel Grid.Column="0" Margin="10">
-                <GroupBox Header="Vertices">
-                    <StackPanel>
+                <GroupBox Header="Vertices" BorderThickness="2">
+                    <StackPanel x:Name="comboSelectionBoxPanel">
                         <TextBlock Text="Start Vertex:" Margin="0,5"/>
                         <ComboBox ItemsSource="{Binding Graph.Vertices}" 
                                   SelectedItem="{Binding SelectedStartVertex}"
                                   DisplayMemberPath="Name"
-                                  Margin="0,0,0,10"/>
+                                  Margin="0,0,0,10"
+                                  x:Name="comboStartVertexBox"/>
 
                         <TextBlock Text="Destination Vertex:" Margin="0,5"/>
                         <ComboBox ItemsSource="{Binding Graph.Vertices}" 
                                   SelectedItem="{Binding SelectedDestinationVertex}"
                                   DisplayMemberPath="Name"
-                                  Margin="0,0,0,10"/>
+                                  Margin="0,0,0,10"
+                                  x:Name="comboDestVertexBox"/>
                         <TextBlock Text="Skip Vertex(Optional):" Margin="0,5"/>
-                        <ComboBox ItemsSource="{Binding Graph.Vertices}" 
+                        <ComboBox ItemsSource="{Binding ShortestPathExclusion}" 
                                   SelectedItem="{Binding SelectedExclusionVertex}"
                                   DisplayMemberPath="Name"
-                                  Margin="0,0,0,10"/>
+                                  Margin="0,0,0,10"
+                                  x:Name="comboExcludeVertexBox"/>
+                        <!--
+                            New feature
+                        -->
+                        <Button Content="Reset" 
+                                Width="40"
+                                Background="GhostWhite" 
+                                Click="ResetButton_Clicked" 
+                                IsEnabled="{Binding CanResetSelections}"
+                                x:Name="resetSelectionsBtn"/>
                     </StackPanel>
                 </GroupBox>
 
-                <GroupBox x:Name="gBoxPathInfo" Header="Path Info" Visibility="Hidden" >
+                <GroupBox x:Name="gBoxPathInfo" Header="Path Info" Visibility="Hidden">
                     <StackPanel>
                         <TextBlock Text="Shortest Path:" FontWeight="Bold"/>
                         <ItemsControl ItemsSource="{Binding ShortestPath}">

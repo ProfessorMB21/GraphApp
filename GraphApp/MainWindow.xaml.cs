@@ -25,17 +25,11 @@ public partial class MainWindow : Window
     }
     private void OpenFile_Executed(object sender, ExecutedRoutedEventArgs e)
     {
+        vm.Clear();
         vm.OpenFile();
         statBar.Visibility = Visibility.Visible;
-    }
-    private void DrawGraph_Executed(object sender, ExecutedRoutedEventArgs e)
-    {
-        if (vm.IsGraphDrawn && vm.CanFindPath)
-        {
-            gBoxPathInfo.Visibility = Visibility.Visible;
-        }
+        resetSelectionsBtn.IsEnabled = true;
         vm.DrawGraph(GraphCanvas);
-        Title = $"{_title}: {vm.PathToString()}";
     }
     private void FindPath_Executed(object sender, ExecutedRoutedEventArgs e)
     {
@@ -44,6 +38,15 @@ public partial class MainWindow : Window
             gBoxPathInfo.Visibility = Visibility.Visible;
         }
         vm.FindPath();
+        vm.DrawGraph(GraphCanvas);
+        Title = $"{_title}: {vm.PathToString()}";
     }
 
+    /// new feature
+    private void ResetButton_Clicked(object sender, RoutedEventArgs e)
+    {
+        vm.SelectedStartVertex = null!;
+        vm.SelectedDestinationVertex = null!;
+        vm.SelectedExclusionVertex = null!;
+    }
 }
