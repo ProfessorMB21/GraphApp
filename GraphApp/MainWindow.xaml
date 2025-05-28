@@ -56,12 +56,13 @@
                                   DisplayMemberPath="Name"
                                   Margin="0,0,0,10"
                                   x:Name="comboDestVertexBox"/>
-                        <TextBlock Text="Skip Vertex(Optional):" Margin="0,5"/>
-                        <ComboBox ItemsSource="{Binding ShortestPathExclusion}" 
+                        <TextBlock Text="Skip Vertex(Optional):" Margin="0,5"  Visibility="Hidden"/>
+                        <ComboBox ItemsSource="{Binding ExclusionShortestPath}" 
                                   SelectedItem="{Binding SelectedExclusionVertex}"
                                   DisplayMemberPath="Name"
                                   Margin="0,0,0,10"
-                                  x:Name="comboExcludeVertexBox"/>
+                                  x:Name="comboExcludeVertexBox"
+                                  Visibility="Hidden"/>
                         <!--
                             New feature
                         -->

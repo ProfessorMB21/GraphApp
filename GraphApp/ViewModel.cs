@@ -115,6 +115,9 @@ namespace GraphApp
             {
                 _shortestPathExclusion = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedStartVertex));
+                OnPropertyChanged(nameof(SelectedDestinationVertex));
+                OnPropertyChanged(nameof(ShortestPath));
             }
         }
         
@@ -197,6 +200,17 @@ namespace GraphApp
             }
         }
 
+        private void GetShortestPathExclusion()
+        {
+            foreach (var vertex in ShortestPath)
+            {
+                if (vertex != SelectedStartVertex && vertex != SelectedDestinationVertex)
+                {
+                    ExclusionShortestPath.Add(vertex);
+                }
+            }
+        }
+
         
         public void FindPath()
         {
@@ -232,6 +246,7 @@ namespace GraphApp
             {
                 ShortestPath = new ObservableCollection<Vertex>(path);
                 ShortestDistance = distance;
+                GetShortestPathExclusion();
                 MessageBox.Show($"Shortest path found with distance: {ShortestDistance}",
                 "Path Found", MessageBoxButton.OK, MessageBoxImage.Information);
             }

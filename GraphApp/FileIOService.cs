@@ -55,10 +55,9 @@ namespace GraphApp
 
             // Read vertex names from first row
             var firstRow = worksheet.FirstRowUsed();
-            var firstCell = firstRow.FirstCellUsed();
+            var firstCell = firstRow!.FirstCellUsed();
             var lastCell = firstRow.LastCellUsed();
-            //int columnCount = lastCell.Address.ColumnNumber - firstCell.Address.ColumnNumber + 1;
-            int columnCount = worksheet.LastRowUsed()!.RowNumber();
+            int columnCount = lastCell.Address.ColumnNumber - firstCell.Address.ColumnNumber + 1;
 
             // Add vertices
             for (int col = 1; col <= columnCount; col++)
